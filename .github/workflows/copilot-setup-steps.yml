@@ -26,8 +26,7 @@ jobs:
     # You can define any steps you want, and they will run before the agent starts.
     # If you do not check out your code, Copilot will do this for you.
     steps:
-      - name: Checkout code
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
@@ -35,4 +34,5 @@ jobs:
       # PyYAML + ShellCheck toolchain via pre-commit's Python-language
       # environment; only pre-commit itself needs installing.
       - name: Install pre-commit
+        shell: bash
         run: pip install pre-commit
