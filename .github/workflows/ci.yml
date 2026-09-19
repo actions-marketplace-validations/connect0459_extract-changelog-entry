@@ -23,7 +23,7 @@ jobs:
     outputs:
       fixture: ${{ steps.filter.outputs.fixture }}
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
@@ -39,7 +39,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
@@ -73,12 +73,13 @@ jobs:
           - bare-url-reference-link
           - bare-url-tag-reference-link
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
       - name: Read fixture inputs
         id: fixture
+        shell: bash
         run: |
           echo "ref-name=$(cat "tests/fixtures/${{ matrix.fixture }}/ref-name")" >> "$GITHUB_OUTPUT"
 
@@ -100,6 +101,7 @@ jobs:
           promote-headings: ${{ steps.fixture.outputs.promote-headings }}
 
       - name: Verify outcome matches fixture contract
+        shell: bash
         run: |
           set -euo pipefail
           FIXTURE_DIR="tests/fixtures/${{ matrix.fixture }}"
@@ -123,6 +125,7 @@ jobs:
 
       - name: Verify step outputs
         if: steps.run-action.outcome == 'success'
+        shell: bash
         run: |
           set -euo pipefail
           RAW_REF="${{ steps.fixture.outputs.ref-name }}"
@@ -153,6 +156,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Require lint and the fixture matrix to have succeeded
+        shell: bash
         run: |
           if [ "${{ needs.changes.result }}" != "success" ]; then
             echo "::error::changed-files detection did not succeed"
